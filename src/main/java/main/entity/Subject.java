@@ -8,10 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
 @Entity
 @Table(name = "subjects")
 @Named
-public class Subject {
+public class Subject{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

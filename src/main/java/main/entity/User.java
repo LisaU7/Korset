@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
 @Entity
 @Table(name = "users")
 @Named
@@ -15,10 +17,10 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
+	public int userId;
 
 	@Column(name = "userName")
-	private String userName;
+	public String userName;
 
 	// Någonting som håller koll på användarens totala poäng
 

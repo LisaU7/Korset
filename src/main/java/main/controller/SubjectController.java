@@ -36,22 +36,23 @@ public class SubjectController {
 	@Inject
 	SubjectService subjectService;
 
+	// Använd INTE @PathParam med POST
 	// CREATE SUBJECT - SUBJECTTITLE [x]
 	@POST
 	@Transactional
-	@Path("/createSubject/{subjectTitle}")
-	public Response createSubject(@PathParam(value = "subjectTitle") String subjectTitle) {
+	@Path("/createSubject")
+	public Response createSubject(String subjectTitle) {
 		Subject subject = new Subject(subjectTitle);
 		subjectService.addSubject(subject);
 		return Response.created(URI.create("/Subjects/" + subject.getSubjectId())).build();
 	}
 
-	// GET SUBJECT - ID //DUMT MED STRING? [x]
+	// GET SUBJECT - ID [x]
 	@GET
 	@Path("/getSubject/{subjectId}")
-	public String getSubject(@PathParam(value = "subjectId") int subjectId) {
+	public Subject getSubject(@PathParam(value = "subjectId") int subjectId) {
 		Subject subject = subjectService.getSubject(subjectId);
-		return subject.toString();
+		return subject;
 	}
 
 	// DELETE SUBJECT - ID [x]
@@ -75,5 +76,10 @@ public class SubjectController {
 	public List<Subject> getAllSubjects() {
 		return subjectService.getAllSubjects();
 	}
-
+//	@GET
+	@Path("/getSubjectTitle")
+	public Subject getSubject(String subjectTitle) {
+		Subject subject = subjectService.getSubjectTitle(subjectTitle);
+		return subject;
+	}
 }

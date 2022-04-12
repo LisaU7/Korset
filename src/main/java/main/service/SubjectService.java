@@ -38,4 +38,9 @@ public class SubjectService {
 		return subjectRepository.getAll();
 	}
 
+	// GET SUBJECT - TITLE
+	public Subject getSubjectTitle(String subjectTitle) {
+		Subject subject = subjectRepository.findByName(subjectTitle);
+		return subject;
+	}
 }

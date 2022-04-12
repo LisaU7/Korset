@@ -15,10 +15,11 @@ public class UserRepository implements PanacheRepository<User> {
 		return find("userId", userId).firstResult();
 	}
 
-	// FIND BY USERNAME
-	public User findByName(String userName) {
-		return find("userName", userName).firstResult();
-	}
+	// FIND BY USERNAME - - - VERKAR INTE FUNGERA
+//	public User findByName(String userName) {
+//		User user = find("userName", userName).firstResult();
+//		return user;
+//	}
 
 	// GET ALL
 	public List<User> getAll() {

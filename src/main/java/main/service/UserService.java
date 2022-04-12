@@ -30,6 +30,11 @@ public class UserService {
 		return user;
 	}
 
+//	//GET USER - NAME
+//	public User getUser(String userName) {
+//		return userRepository.findByName(userName);
+//	}
+
 	// DELETE USER - ID
 	public void deleteUser(User user) {
 		userRepository.delete(user);

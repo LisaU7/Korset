@@ -41,20 +41,27 @@ public class UserController {
 	// CREATE USER - USERNAME [x]
 	@POST
 	@Transactional
-	@Path("/createUser/{userName}")
-	public Response createUser(@PathParam(value = "userName") String userName) {
+	@Path("/createUser")
+	public Response createUser(String userName) {
 		User user = new User(userName);
 		userService.addUser(user);
 		return Response.created(URI.create("/Users/" + user.getUserId())).build();
 	}
 
 	// GET USER - ID //DUMT ATT ANVÄNDA STRING? [x]
+
 	@GET
 	@Path("/getUser/{userId}")
-	public String getUser(@PathParam(value = "userId") int userId) {
+	public User getUser(@PathParam(value = "userId") int userId) {
 		User user = userService.getUser(userId);
-		return user.toString();
+		return user;
 	}
+//	@GET
+//	@Path("/getUser")
+//	public String getUser(String userName) {
+//		User user = userService.getUser(userName);
+//		return user.toString();
+//	}
 
 	// DELETE USER - ID [x]
 	@DELETE

@@ -15,14 +15,12 @@ public class SubjectRepository implements PanacheRepository<Subject> {
 		return find("subjectId", subjectId).firstResult();
 	}
 
-	// FIND BY SUBJECTTITLE
-	public Subject findByName(String subjectTitle) {
-		return find("subjectTitle", subjectTitle).firstResult();
-	}
-
 	// GET ALL
 	public List<Subject> getAll() {
 		return findAll().list();
 	}
-
+	// FIND BY SUBJECTTITLE - - - VERKAR INTE FUNGERA
+	public Subject findByName(String subjectTitle) {
+		return find("subjectTitle", subjectTitle).firstResult();
+	}
 }

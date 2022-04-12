@@ -8,19 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
 @Entity
 @Table(name = "valueDB")
 @Named
-public class Value {
+public class Value{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int valueId;
 	
-//	@Column(name="subjectId") //Kanske bra om title är med också?
-//	int subjectId;
-//	
-//	@Column(name="userId")
-//	int userId;
+	@Column(name="subjectId") //Kanske bra om title är med också?
+	int subjectId;
 	
 	@Column(name="valuey")
 	int valuey;
@@ -31,14 +30,29 @@ public class Value {
 //	@Column(name="subjectTitle")
 //	String subjectTitle;
 	
+//	
+//	@Column(name="userId")
+//	int userId;
+	
 	public Value() {
 		
 	}
-
-	public Value(int valuey, int valuex) {
+	
+	public Value(int subjectId, int valuey, int valuex) {
 		super();
+		this.subjectId = subjectId;
 		this.valuey = valuey;
 		this.valuex = valuex;
+	}
+	
+	
+
+	public int getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(int subjectId) {
+		this.subjectId = subjectId;
 	}
 
 	public int getValueId() {

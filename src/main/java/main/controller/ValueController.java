@@ -1,6 +1,5 @@
 package main.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -20,8 +19,6 @@ import org.springframework.stereotype.Controller;
 import main.entity.Value;
 import main.service.ValueService;
 
-
-
 @ApplicationScoped
 @Controller
 @Path("/LIA1")
@@ -30,39 +27,35 @@ import main.service.ValueService;
 public class ValueController {
 	@Inject
 	Value value;
-	
+
 	@Inject
 	ValueService valueService;
 	
-	//CREATE VALUE
-	
+	// Använd INTE @PathParam i POST
+
+	// CREATE VALUE
+
 	@POST
 	@Transactional
 	@Path("/createValue")
-	public Response createValue(Value exvalue) {
-//		Value value = new Value(valuey,valuex);
-		valueService.addValue(exvalue);
-		return Response.ok(exvalue).build();
-//return Response.created(URI.create("/Values/" + value.getValueId())).build();
+	public Response createValue(Value value) {
+		valueService.addValue(value);
+		return Response.ok(value).build();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@GET
+	@Path("/getValue/{valueId}")
+	public Value getValue(@PathParam(value = "valueId") int valueId) {
+		Value value = valueService.getValue(valueId);
+		return value;
+	}
+
+	@GET
+	@Path("/getAllValues")
+	public List<Value> getAllValues() {
+		return valueService.getAllValues();
+	}
+
 //	@POST
 //	@Transactional
 //	@Path("/createValue/{valuey}/{valuex}")
@@ -72,20 +65,5 @@ public class ValueController {
 //		valueService.addValue(value);
 //		return Response.created(URI.create("/Values/" + value.getValueId())).build();
 //	}
-	
-	@GET
-	@Path("/getValue/{valueId}")
-	public Value getValue(@PathParam(value = "valueId") int valueId) {
-		Value value = valueService.getValue(valueId);
-		return value;
-	}
-	
-	@GET
-	@Path("/getAllValues")
-	public List<Value> getAllValues(){
-		return valueService.getAllValues();
-	}
-	
-
 
 }
