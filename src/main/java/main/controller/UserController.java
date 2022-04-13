@@ -12,7 +12,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -31,10 +31,7 @@ import main.service.UserService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserController {
-
-	@Inject
-	User user;
-
+	
 	@Inject
 	UserService userService;
 
@@ -48,20 +45,28 @@ public class UserController {
 		return Response.created(URI.create("/Users/" + user.getUserId())).build();
 	}
 
-	// GET USER - ID //DUMT ATT ANVÄNDA STRING? [x]
-
+	// GET USER - ID [x]
 	@GET
 	@Path("/getUser/{userId}")
 	public User getUser(@PathParam(value = "userId") int userId) {
 		User user = userService.getUser(userId);
 		return user;
 	}
-//	@GET
-//	@Path("/getUser")
-//	public String getUser(String userName) {
-//		User user = userService.getUser(userName);
-//		return user.toString();
-//	}
+
+	// GET USER - USERNAME [x]
+	@GET
+	@Path("/getUser")
+	public User getUser(String userName) {
+		User user = userService.getUser(userName);
+		return user;
+	}
+
+	// GET ALL USERS [x]
+	@GET
+	@Path("/getAllUsers")
+	public List<User> getAllUsers() {
+		return userService.getAllUsers();
+	}
 
 	// DELETE USER - ID [x]
 	@DELETE
@@ -84,12 +89,5 @@ public class UserController {
 //		User
 //		
 //	}
-
-	// GET ALL USERS [ ]
-	@GET
-	@Path("/getAllUsers")
-	public List<User> getAllUsers() {
-		return userService.getAllUsers();
-	}
 
 }

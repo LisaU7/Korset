@@ -9,11 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
 @Table(name = "valueDB")
 @Named
-public class Value{
+public class Value extends PanacheEntityBase{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int valueId;

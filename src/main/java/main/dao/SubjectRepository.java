@@ -19,8 +19,4 @@ public class SubjectRepository implements PanacheRepository<Subject> {
 	public List<Subject> getAll() {
 		return findAll().list();
 	}
-	// FIND BY SUBJECTTITLE - - - VERKAR INTE FUNGERA
-	public Subject findByName(String subjectTitle) {
-		return find("subjectTitle", subjectTitle).firstResult();
-	}
 }

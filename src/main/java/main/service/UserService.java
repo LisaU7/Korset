@@ -1,6 +1,5 @@
 package main.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -30,19 +29,19 @@ public class UserService {
 		return user;
 	}
 
-//	//GET USER - NAME
-//	public User getUser(String userName) {
-//		return userRepository.findByName(userName);
-//	}
-
-	// DELETE USER - ID
-	public void deleteUser(User user) {
-		userRepository.delete(user);
+	// GET USER - NAME
+	public User getUser(String userName) {
+		return user.findByName(userName);
 	}
 
 	// GET ALL
 	public List<User> getAllUsers() {
 		return userRepository.getAll();
+	}
+
+	// DELETE USER - ID
+	public void deleteUser(User user) {
+		userRepository.delete(user);
 	}
 
 }

@@ -28,11 +28,6 @@ public class SubjectService {
 		return subject;
 	}
 
-	// DELETE SUBJECT - ID
-	public void deleteSubject(Subject subject) {
-		subjectRepository.delete(subject);
-	}
-
 	// GET ALL
 	public List<Subject> getAllSubjects() {
 		return subjectRepository.getAll();
@@ -40,7 +35,12 @@ public class SubjectService {
 
 	// GET SUBJECT - TITLE
 	public Subject getSubjectTitle(String subjectTitle) {
-		Subject subject = subjectRepository.findByName(subjectTitle);
-		return subject;
+		Subject exsubject = subject.findByName(subjectTitle);
+		return exsubject;
+	}
+
+	// DELETE SUBJECT - ID
+	public void deleteSubject(Subject subject) {
+		subjectRepository.delete(subject);
 	}
 }

@@ -8,12 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
 @Table(name = "subjects")
 @Named
-public class Subject{
+public class Subject extends PanacheEntityBase {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +54,9 @@ public class Subject{
 	public String toString() {
 		return "Subject [subjectId=" + subjectId + ", subjectTitle=" + subjectTitle + "]";
 	}
+	
+	  public Subject findByName(String subjectTitle){
+	        return find("subjectTitle", subjectTitle).firstResult();
+	    }
 
 }

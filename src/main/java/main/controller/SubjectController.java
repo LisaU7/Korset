@@ -30,13 +30,13 @@ import main.service.SubjectService;
 @Consumes(MediaType.APPLICATION_JSON)
 public class SubjectController {
 
-	@Inject
-	Subject subject;
+	// @PathParam eller payload?!
 
 	@Inject
 	SubjectService subjectService;
 
-	// Använd INTE @PathParam med POST
+	// Använd INTE @PathParam med int och POST
+
 	// CREATE SUBJECT - SUBJECTTITLE [x]
 	@POST
 	@Transactional
@@ -55,6 +55,21 @@ public class SubjectController {
 		return subject;
 	}
 
+	// GET SUBJECT - TITLE [x]
+	@GET
+	@Path("/getSubjectTitle/{subjectTitle}")
+	public Subject getSubject(@PathParam(value = "subjectTitle")String subjectTitle) {
+		Subject subject = subjectService.getSubjectTitle(subjectTitle);
+		return subject;
+	}
+
+	// GET ALL SUBJECTS [x]
+	@GET
+	@Path("/getAllSubjects")
+	public List<Subject> getAllSubjects() {
+		return subjectService.getAllSubjects();
+	}
+
 	// DELETE SUBJECT - ID [x]
 	@DELETE
 	@Transactional
@@ -70,16 +85,4 @@ public class SubjectController {
 
 	// UPDATE SUBJECT [ ]
 
-	// GET ALL SUBJECTS [ ]
-	@GET
-	@Path("/getAllSubjects")
-	public List<Subject> getAllSubjects() {
-		return subjectService.getAllSubjects();
-	}
-//	@GET
-	@Path("/getSubjectTitle")
-	public Subject getSubject(String subjectTitle) {
-		Subject subject = subjectService.getSubjectTitle(subjectTitle);
-		return subject;
-	}
 }

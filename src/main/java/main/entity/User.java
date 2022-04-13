@@ -8,19 +8,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
+
 
 @Entity
 @Table(name = "users")
 @Named
-public class User {
+public class User extends PanacheEntityBase {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int userId;
+	private int userId;
 
 	@Column(name = "userName")
-	public String userName;
+	private String userName;
 
 	// Någonting som håller koll på användarens totala poäng
 
@@ -56,5 +58,9 @@ public class User {
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + "]";
 	}
+	
+	public User findByName(String userName){
+        return find("userName", userName).firstResult();
+    }
 
 }
