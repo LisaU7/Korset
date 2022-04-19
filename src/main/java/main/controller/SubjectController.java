@@ -41,10 +41,11 @@ public class SubjectController {
 	@POST
 	@Transactional
 	@Path("/createSubject")
-	public Response createSubject(String subjectTitle) {
+	public Subject createSubject(String subjectTitle) {
 		Subject subject = new Subject(subjectTitle);
 		subjectService.addSubject(subject);
-		return Response.created(URI.create("/Subjects/" + subject.getSubjectId())).build();
+		return subject;
+//		return Response.created(URI.create("/Subjects/" + subject.getSubjectId())).build();
 	}
 
 	// GET SUBJECT - ID [x]
@@ -57,8 +58,8 @@ public class SubjectController {
 
 	// GET SUBJECT - TITLE [x]
 	@GET
-	@Path("/getSubjectTitle/{subjectTitle}")
-	public Subject getSubject(@PathParam(value = "subjectTitle")String subjectTitle) {
+	@Path("/getSubjectTitle")
+	public Subject getSubject(String subjectTitle) { //@PathParam(value = "subjectTitle")
 		Subject subject = subjectService.getSubjectTitle(subjectTitle);
 		return subject;
 	}
