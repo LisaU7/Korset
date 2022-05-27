@@ -1,0 +1,28 @@
+Saker att utveckla:
+Se till att alla is_currentUser återställs när applikationen stängs ner i webbläsaren, samt när backend startas om via quarkus
+Eller ha en separat tabell där den aktuella användaren läggs till vid start, och sedan använda drop-and-create på den för att återställa den när applikationen avslutas via quarkus?
+ALLTING kring currentUser är osäkert, är skriven med ful kod och osmidiga lösningar!
+
+Se till att alla knappar, input, select osv ser likadana ut, just nu har de samma typsnitt osv i koden men ser ändå olika ut. Borde kanske ligga under samma klass så man får gemensam styling på
+de gemensamma egenskaperna?
+
+Snygga till koden i framförallt frontend, strukturera upp ordentligt och göra den mer "utvecklingsvänlig".(Använda klasser för att samla t.ex. 
+
+Skriva om DBactions så de inte returnerar en select utan något smidigare på initLoad
+
+CreateSubject finns i både Create.js samt DBactions, borde ordnas upp..!
+
+Ska värden nollställas i databasen när app avslutas? -> Bästa vore ju om man kunde spara olika huvudämnen med subjects, värden och användare -> något att utveckla framåt!
+
+FINNS MASSOR SOM BORDE FIXAS I FRONTEND, LAYOUT OSV! - Byta plats på leftcolumn och adminfield, mer logiskt upplägg med vidare och tillbaka knapparna
+
+Hårdkoda en admin? -> Hur då? ---> Skriver koden runt admin i frontend som att endast en admin är hårdkodad, bättre lösning hinns inte med för tillfället
+
+Dela upp DBactions baserat på vilken entitet som hanteras
+
+Vad ska admin kunna göra? Ska admin endast kunna skapa användare och subjects men inte värden?
+
+
+STRUKTURERA om .js filerna, se till att alla anrop ligger i DBactions och används i tex create.js. Sjukt rörigt just nu.
+
+Se över deleteSelect-listorna, se till att de uppdateras när något raderas osv.
