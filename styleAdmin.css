@@ -1,0 +1,216 @@
+body {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  margin-left: 400px;
+  margin-top: 100px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  background: rgb(249, 249, 244);
+  background: linear-gradient(
+    90deg,
+    rgba(249, 249, 244, 1) 0%,
+    rgba(242, 242, 230, 1) 50%,
+    rgba(229, 252, 182, 1) 100%
+  );
+}
+
+#wrapper {
+  background: none;
+}
+
+#leftcolumn {
+  display: inline;
+  color: #333;
+  margin: 0px 0px 0px 20px;
+  padding: 0;
+  width: 400px;
+  height: 500px;
+  float: right;
+}
+
+.listContainer {
+  width: 250px;
+  height: fit-content;
+  background: white;
+  border: 1px solid #7e7e7e;
+  border-radius: 6px;
+  list-style-type: none;
+  margin: 0px 10px 0px 0px;
+}
+
+.listHeading {
+  margin-left: 5px;
+}
+
+#displaySubjects {
+  text-align: left;
+  list-style-type: none;
+  font-size: 22px;
+  color: #000000;
+  padding-left: 15px;
+}
+
+#displayUsers {
+  text-align: left;
+  list-style-type: none;
+  font-size: 22px;
+  color: #000000;
+  padding-left: 15px;
+}
+
+#backToStartbtn {
+  margin-top: 20px;
+}
+
+#adminField {
+  /* background: #c9dad7; */
+  margin: 0px 0px;
+  height: fit-content;
+  width: 400px;
+  float: left;
+}
+#adminFieldContent {
+  background: none;
+  width: 840px;
+  height: 500px;
+}
+
+#addUserbtn {
+  display: inline;
+  margin-top: 10px;
+}
+#addUserMessage {
+  display: inline;
+}
+
+#deleteUserbtn {
+  display: inline-block;
+}
+#deleteUserList {
+  display: block;
+  margin-top: 10px;
+}
+#deleteUserMessage {
+  display: block;
+  font-family: "Arial";
+  display: block;
+  font-size: 15px;
+}
+
+#addSubjectContainer {
+}
+#addSubjectbtn {
+  margin-top: 10px;
+  display: inline-block;
+}
+#addSubjectTitle {
+  display: block;
+  margin-top: 30px;
+}
+#subjectDescription {
+  margin-top: 10px;
+  display: block;
+}
+
+#deleteSubjectbtn {
+  display: inline-block;
+}
+#deleteSubjectList {
+  margin-top: 10px;
+}
+#deleteSubjectMessage {
+  display: block;
+}
+
+.messageContainer {
+  background: none;
+  width: 250px;
+  height: 30px;
+  font-family: "Arial";
+  display: inline;
+  font-size: 15px;
+}
+.selectListContainer {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 15px;
+  width: 160px;
+}
+.selectListContainer select {
+  font-family: "Arial";
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+  padding: 4px 6px;
+  border: 1px solid #7e7e7e;
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+  background-color: #f9f9f9;
+  color: #000000;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.selectListContainer select::-ms-expand {
+  display: none;
+}
+.selectListContainer select:hover,
+.selectListContainer select:focus {
+  color: #000000;
+  background: #eaeaea;
+}
+.selectListContainer select:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.select_arrow {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  pointer-events: none;
+  border-style: solid;
+  border-width: 8px 5px 0px 5px;
+  border-color: #7b7b7b transparent transparent transparent;
+}
+.selectListContainer select:hover ~ .select_arrow,
+.selectListContainer select:focus ~ .select_arrow {
+  border-top-color: #000000;
+}
+.selectListContainer select:disabled ~ .select_arrow {
+  border-top-color: #cccccc;
+}
+
+.input {
+  padding: 3.5px;
+  font-size: 14px;
+  border: 1px solid #7e7e7e;
+  background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+  background-color: #f9f9f9;
+  color: #000000;
+  border-style: solid;
+  border-radius: 6px;
+}
+.input:focus {
+  outline: none;
+}
+
+.btn {
+  background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #7e7e7e;
+  display: inline;
+  cursor: pointer;
+  color: #666666;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 4px 6px;
+  text-decoration: none;
+}
+.btn:active {
+  position: relative;
+  top: 1px;
+}

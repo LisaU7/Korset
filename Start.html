@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Korset - Start</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="styleStart.css" />
+    <script type="module">
+      import { initLoadUsers } from "./JavaScript/InitLoad.js";
+      import { setCurrentUserTrue } from "./JavaScript/DBactions.js";
+      import { setCurrentUserFalse } from "./JavaScript/DBactions.js";
+      import { getAllUsers } from "./JavaScript/DBactions.js";
+      import { getAllAdmin } from "./JavaScript/DBactions.js";
+      import { setAdminActiveTrue } from "./JavaScript/DBactions.js";
+      import { setAdminActiveFalse } from "./JavaScript/DBactions.js";
+
+      var responseGetAllUsers = await getAllUsers();
+
+      //Changing is_currentUser to false for every user at start
+      responseGetAllUsers.data.forEach((user) => {
+        let id = user.userId;
+        setCurrentUserFalse(id);
+      });
+
+      //INIT LOAD
+      let selectUser = document.getElementById("userList");
+      selectUser = await initLoadUsers(selectUser);
+
+      async function setCurrentUserbtn() {
+        let currentUser = parseInt(
+          selectUser.options[selectUser.selectedIndex].value
+        );
+        let id = currentUser.toString();
+        let arr = await setCurrentUserTrue(id);
+      }
+
+      nextbtn.addEventListener("click", setCurrentUserbtn);
+
+      async function setAdminActive() {
+        await setAdminActiveTrue();
+      }
+
+      adminbtn.addEventListener("click", setAdminActive);
+    </script>
+    <script
+      type="text/javascript"
+      src="https://canvasjs.com/assets/script/canvasjs.min.js"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- Begin Wrapper -->
+    <div id="wrapper">
+      <div id="midField">
+        <div id="midFieldContent">
+          <button id="adminbtn" onclick="window.location.href='Admin.html'">
+            Admin
+          </button>
+          <select required name="users" id="userList" type="text">
+            <option disabled selected>Choose User</option>
+          </select>
+          <button id="nextbtn" onclick="window.location.href='index.html'">
+            ->
+          </button>
+        </div>
+        <!-- End midFieldContent-->
+      </div>
+      <!-- End midField-->
+    </div>
+    <!-- End Wrapper -->
+  </body>
+</html>

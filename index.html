@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Korset</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="module">
+      import { initLoadSubjects } from "./JavaScript/InitLoad.js";
+      // import { initLoadUsers } from "./JavaScript/InitLoad.js";
+      import { initLoadValues } from "./JavaScript/InitLoad.js";
+      import { initLoadSubjectList } from "./JavaScript/InitLoad.js";
+
+      import { getAllValues } from "./JavaScript/DBactions.js";
+      import { getAllUsers } from "./JavaScript/DBactions.js";
+      import { findCurrentUser } from "./JavaScript/DBactions.js";
+      import { getSubjectId } from "./JavaScript/DBactions.js";
+      import { getAllSubjects } from "./JavaScript/DBactions.js";
+      import { isAdminActive } from "./JavaScript/DBactions.js";
+      import { setAdminActiveFalse } from "./JavaScript/DBactions.js";
+
+      import { addValue } from "./JavaScript/Create.js";
+      import { addSubject } from "./JavaScript/Create.js";
+
+      window.onload = async function () {
+        // --- GLOBAL VARIABLES ---
+
+        //SELECT & DISPLAY
+        var selectSubject = document.getElementById("subjectList");
+        // var selectUser = document.getElementById("userList");
+        var displaySubjects = document.getElementById("displaySubjects");
+        var displayError = document.getElementById("errorMessages");
+        var displayCurrentUser = document.getElementById("displayCurrentUser");
+        var errorMessageContainer = document.getElementById(
+          "errorMessageContainer"
+        );
+        var addValueContainer = document.getElementById("addValueContainer");
+
+        //INPUT
+        var inputSubjectTitle = document.getElementById("addSubjectTitle");
+        var inputYValue = document.getElementById("yValue");
+        var inputXValue = document.getElementById("xValue");
+
+        //BUTTONS
+        var addSubjectbtn = document.getElementById("addSubjectbtn");
+        var addValuebtn = document.getElementById("addValuebtn");
+        var adminReloadbtn = document.getElementById("adminReloadbtn");
+
+        //RESPONSE
+        var responseGetAllValues = await getAllValues();
+        var responseGetAllSubjects = await getAllSubjects();
+        var responseGetAllUsers = await getAllUsers();
+
+        var series = [];
+        var dps = []; //dataPoints.
+
+        //INITIALIZING CHART
+        var chart = new CanvasJS.Chart("chartContainer", {
+          title: {
+            text: "Accepting DataPoints from User Input",
+          },
+          toolTip: {
+            contentFormatter: function (e) {
+              var content = " ";
+              let currentdp = e.entries[0];
+              let toolTipXValue = currentdp.dataPoint.x;
+              let toolTipYValue = currentdp.dataPoint.y;
+              for (let i = 0; i < e.entries.length; i++) {
+                let userId = e.entries[i].dataPoint.userId;
+                let userArr = responseGetAllUsers.data;
+                let user = userArr.find((o) => o.userId === userId);
+                content +=
+                  "Subject: " +
+                  e.entries[i].dataSeries.name +
+                  "<br/>" +
+                  "User Name: " +
+                  user.userName +
+                  // e.entries[i].dataPoint.userName +
+                  "<br/>" +
+                  "ValueId: " +
+                  e.entries[i].dataPoint.valueId;
+                content += "<br/>";
+
+                //If multiple values has the same x,y, info about both values
+                //is shown
+                responseGetAllValues.data.forEach((value) => {
+                  let subjectId = value.subjectId;
+                  let arr = responseGetAllSubjects.data; // FUL KOD
+                  let subject = arr.find((o) => o.subjectId === subjectId);
+                  userId = value.userId;
+                  userArr = responseGetAllUsers.data;
+                  user = userArr.find((o) => o.userId === userId);
+
+                  if (
+                    value.valuex === toolTipXValue &&
+                    value.valuey === toolTipYValue &&
+                    value.valueId != currentdp.dataPoint.valueId
+                  ) {
+                    content +=
+                      "<br/>" +
+                      "Subject: " +
+                      "subject.subjectTitle" +
+                      "<br/>" +
+                      "User Name: " +
+                      user.userName +
+                      "<br/>" +
+                      "ValueId: " +
+                      value.valueId;
+                    content += "<br/>";
+
+                    // console.log(value);
+                  }
+                });
+                return content;
+              } //for-loop
+            }, //contentFormatter
+          }, //toolTip
+
+          data: [
+            {
+              bevelEnabled: true,
+              type: "scatter",
+              showInLegend: false,
+              dataPoints: dps,
+            },
+          ],
+        });
+        chart.render();
+
+        //CURRENT USER
+        var currentUser;
+        var adminActive = await isAdminActive();
+
+        if (adminActive.data) {
+          let message = document.createTextNode("Admin");
+          displayCurrentUser.appendChild(message);
+          addValueContainer.style.visibility = "hidden";
+          adminReloadbtn.style.visibility = "visible";
+        } else {
+          let currentUserArray = await findCurrentUser();
+          //If there is more than one active user, errormessage i shown.
+          if (currentUserArray.length != 1) {
+            errorMessageContainer.style.visibility = "visible";
+            let message = document.createTextNode("Something wrong with users");
+            displayError.appendChild(message);
+          } else {
+            //SETS CURRENT USER GLOBAL
+            currentUser = currentUserArray[0];
+            let message = document.createTextNode(currentUser.userName);
+            displayCurrentUser.appendChild(message);
+          }
+        }
+
+        //Returns an array with all active users
+
+        // --- INITIAL LOADING OF DATA [InitLoad.js]---
+        selectSubject = await initLoadSubjects(selectSubject);
+        // selectUser = await initLoadUsers(selectUser);
+        await initLoadValues(chart, series);
+        displaySubjects = await initLoadSubjectList(displaySubjects);
+        // --- ---
+
+        // --- CREATE FE ---
+        //CREATE VALUE
+        function addValueAndRender() {
+          let yValue = parseInt(inputYValue.value);
+          let xValue = parseInt(inputXValue.value);
+          let userId = currentUser.userId;
+          let subjectId = parseInt(
+            selectSubject.options[selectSubject.selectedIndex].value
+          );
+
+          addValue(yValue, xValue, userId, subjectId, chart, series);
+        }
+
+        //Add Value Button
+        addValuebtn.addEventListener("click", addValueAndRender);
+
+        //CHANGE USER (BACK TO START)
+        async function backToStart() {
+          await setAdminActiveFalse();
+        }
+
+        changeUserbtn.addEventListener("click", backToStart);
+
+        adminReloadbtn.addEventListener("click", function () {
+          window.location.reload();
+        });
+      }; //WINDOW ON-LOAD
+      // --- ---
+    </script>
+
+    <script
+      type="text/javascript"
+      src="https://canvasjs.com/assets/script/canvasjs.min.js"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- Begin Wrapper -->
+    <div id="wrapper">
+      <!-- Begin Header -->
+      <div id="header">
+        <h1 id="heading">Korset</h1>
+      </div>
+      <!-- End Header -->
+      <div id="space">
+        <div id="errorMessageContainer">
+          <span id="errorMessages"></span>
+        </div>
+      </div>
+      <div id="faux">
+        <!-- Begin Left Column -->
+        <div id="leftcolumn">
+          <div id="listContainer">
+            LISTA MED SUBJECTS
+            <ul id="displaySubjects"></ul>
+          </div>
+        </div>
+        <!-- End Left Column -->
+        <!-- Begin Right Column -->
+        <div id="rightcolumn">
+          Current User:
+          <span id="displayCurrentUser"></span>
+          <button
+            id="changeUserbtn"
+            onclick="window.location.href='Start.html'"
+          >
+            Change User
+          </button>
+          <button id="adminReloadbtn">Reload</button>
+          <div id="chartContainer" style="width: 1300px"></div>
+          <div id="addValueContainer">
+            <div class="subjectListContainer">
+              <select name="subjects" id="subjectList" type="text"></select>
+              <div class="select_arrow"></div>
+            </div>
+            <input
+              class="input"
+              id="xValue"
+              type="number"
+              step="any"
+              placeholder="Enter X-Value"
+            />
+            <input
+              class="input"
+              id="yValue"
+              type="number"
+              step="any"
+              placeholder="Enter Y-Value"
+            />
+            <button id="addValuebtn">Add DataPoint & Render</button>
+          </div>
+        </div>
+        <!-- End Right Column -->
+      </div>
+      <!-- End Faux Columns -->
+    </div>
+    <!-- End Wrapper -->
+  </body>
+</html>

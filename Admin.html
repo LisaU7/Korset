@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Korset - Admin</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="styleAdmin.css" />
+    <script type="module">
+      import { initLoadSubjectList } from "./JavaScript/InitLoad.js";
+      import { initLoadUserList } from "./JavaScript/InitLoad.js";
+      import { initLoadSubjects } from "./JavaScript/InitLoad.js";
+      import { initLoadUsers } from "./JavaScript/InitLoad.js";
+      import { deleteSubject } from "./JavaScript/DBactions.js";
+      import { createSubject } from "./JavaScript/DBactions.js";
+      import { deleteUser } from "./JavaScript/DBactions.js";
+      import {createUser} from "./JavaScript/DBactions.js";
+
+      var displaySubjects = document.getElementById("displaySubjects");
+      var displayUsers = document.getElementById("displayUsers");
+      var deleteSubjectList = document.getElementById("deleteSubjectList");
+      var addSubjectTitle = document.getElementById("addSubjectTitle");
+      var addSubjectDescription = document.getElementById("subjectDescription");
+      var addSubjectbtn = document.getElementById("addSubjectbtn");
+      var addSubjectMessage = document.getElementById("addSubjectMessage");
+      var deleteSubjectMessage = document.getElementById(
+        "deleteSubjectMessage"
+      );
+      var addUserName = document.getElementById("addUserName");
+      var addUserMessage = document.getElementById("addUserMessage");
+      var deleteUserList = document.getElementById("deleteUserList");
+      var deleteUserbtn = document.getElementById("deleteUserbtn");
+      var deleteUserMessage = document.getElementById("deleteUserMessage");
+
+      //INIT LOAD
+      displaySubjects = await initLoadSubjectList(displaySubjects);
+      displayUsers = await initLoadUserList(displayUsers);
+      deleteSubjectList = await initLoadSubjects(deleteSubjectList);
+      deleteUserList = await initLoadUsers(deleteUserList);
+
+      //Clearing anything that might be left in textarea
+      addSubjectDescription.value = "";
+
+      //ADD SUBJECT FUNCTION
+      async function addSubject() {
+        let subjectTitle = addSubjectTitle.value;
+        let subjectDescription = addSubjectDescription.value;
+        let response = await createSubject(subjectTitle, subjectDescription);
+        if (response === "OK") {
+          //Clearing any leftover messages and adding a new message
+          addSubjectMessage.innerHTML = "";
+          let message = document.createTextNode("Subject Created!");
+          addSubjectMessage.appendChild(message);
+          //Clearing title-input and description textarea
+          addSubjectTitle.value = "";
+          addSubjectDescription.value = "";
+          //Adding the created subject to the displayed list of subjects
+          let li = document.createElement("li");
+          li.appendChild(document.createTextNode(subjectTitle));
+          displaySubjects.appendChild(li);
+        }
+        if (response === "No content") {
+          //Clearing any leftover messages and adding a new message
+          addSubjectMessage.innerHTML = "";
+          let message = document.createTextNode(
+            "Please enter Title and Description"
+          );
+          addSubjectMessage.appendChild(message);
+        }
+      }
+      //ADD SUBJECT BUTTON
+      addSubjectbtn.addEventListener("click", function () {
+        addSubject();
+      });
+
+      //DELETE SUBJECT FUNCTION
+
+      async function deleteSubjectfunc() {
+        let subjectId = parseInt(
+          deleteSubjectList.options[deleteSubjectList.selectedIndex].value
+        );
+        let response = await deleteSubject(subjectId);
+        if (response === "OK") {
+          //Clearing any leftover messages and adding a new message
+          deleteSubjectMessage.innerHTML = "";
+          let message = document.createTextNode("User was deleted");
+          deleteUserMessage.appendChild(message);
+          //Clearing the list of Users, then reloading it from DB.
+          displaySubjects.innerHTML = "";
+          displaySubjects = await initLoadSubjectList(displaySubjects);
+        }
+        if (response === "FAIL") {
+          //Clearing any leftover messages and adding a new message
+          deleteSubjectMessage.innerHTML = "";
+          let message = document.createTextNode("Could not delete Subject");
+          deleteSubjectMessage.appendChild(message);
+        }
+      }
+
+      deleteSubjectbtn.addEventListener("click", function () {
+        let subjectId = parseInt(
+          deleteSubjectList.options[deleteSubjectList.selectedIndex].value
+        );
+        deleteSubject(subjectId);
+      });
+
+      //CREATE USER FUNCTION
+
+      async function createUserfunc(){
+        let userName = addUserName.value;
+        let response = createUser(userName);
+        if(response === "OK"){
+          //Clearing any leftover messages and adding a new message
+          addUserMessage.innerHTML = "";
+          let message = document.createTextNode("User Created");
+          addUserMessage.appendChild(message);
+        }
+
+      }
+
+
+      //DELETE USER FUNCTION
+      async function deleteUserfunc() {
+        let userId = parseInt(
+          deleteUserList.options[deleteUserList.selectedIndex].value
+        );
+        let response = await deleteUser(userId);
+        if (response === "OK") {
+          //Clearing any leftover messages and adding a new message
+          deleteUserMessage.innerHTML = "";
+          let message = document.createTextNode("User was deleted");
+          deleteUserMessage.appendChild(message);
+          //Clearing the list of Users, then reloading it from DB.
+          displayUsers.innerHTML = "";
+          displayUsers = await initLoadUserList(displayUsers);
+        }
+        if (response === "FAIL") {
+          //Clearing any leftover messages and adding a new message
+          deleteUserMessage.innerHTML = "";
+          let message = document.createTextNode("Could not delete User");
+          deleteUserMessage.appendChild(message);
+        }
+      }
+
+      //DELETE USER BUTTON
+      deleteUserbtn.addEventListener("click", function () {
+        deleteUserfunc();
+      });
+
+
+
+      
+      
+
+
+    </script>
+    <script
+      type="text/javascript"
+      src="https://canvasjs.com/assets/script/canvasjs.min.js"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- Begin Wrapper -->
+    <div id="wrapper">
+      <div id="heading">
+        <h1 id="topheading"> Korset - Admin</h1>
+      </div>
+      <div id="adminField">
+        <div id="adminFieldContent">
+          <div id="addUserContainer">
+            <h2 id="addUserHeading">Add User</h2>
+            <input
+              class="input"
+              id="addUserName"
+              type="text"
+              placeholder="Enter User Name"
+            />
+            <button class="btn" id="addUserbtn">Add User</button>
+            <div class="messageContainer" id="addUserMessage">
+              <span id="addUserMessage"></span>
+            <div id="deleteUserContainer">
+              <div class="selectListContainer">
+                <select name="users" id="deleteUserList" type="text"></select>
+
+                <div class="select_arrow"></div>
+              </div>
+              <button class="btn" id="deleteUserbtn">Delete User</button>
+              <div class="messageContainer" id="deleteUserMessage">
+                <span id="deleteUserMessage"></span>
+              </div>
+            </div>
+          </div>
+          <div id="addSubjectContainer">
+            <h2 id="addSubjectHeading">Add Subject</h2>
+            <input
+              class="input"
+              id="addSubjectTitle"
+              type="text"
+              placeholder="Enter Subject Title"
+            />
+            <textarea
+              id="subjectDescription"
+              rows="8"
+              cols="40"
+              maxlength="255"
+              placeholder="Enter a Description of the subject..."
+            >
+            </textarea>
+            <button class="btn" id="addSubjectbtn">Add Subject</button>
+            <div class="messageContainer" id="addSubjectMessage">
+              <span id="addSubjectMessage"></span>
+            </div>
+          </div>
+          <div id="deleteSubjectContainer">
+            <div class="selectListContainer">
+              <select
+                name="subjects"
+                id="deleteSubjectList"
+                type="text"
+              ></select>
+
+              <div class="select_arrow"></div>
+            </div>
+            <button class="btn" id="deleteSubjectbtn">Delete Subject</button>
+            <div class="messageContainer" id="deleteSubjectMessage">
+              <span id="deleteSubjectMessage"></span>
+            </div>
+          </div>
+        </div>
+        <!-- End midFieldContent-->
+      </div>
+      <!-- End adminField-->
+    </div>
+      <div id="leftcolumn">
+        <h1 class="listHeading" id="userHeading">Users</h1>
+        <div class="listContainer" id="userList">
+          <ul id="displayUsers"></ul>
+        </div>
+        <h1 class="listHeading" id="subjectHeading">Subjects</h1>
+        <div class="listContainer" id="subjectList">
+          <ul id="displaySubjects"></ul>
+        </div>
+        <button class = "btn" id="backToStartbtn" onclick="window.location.href='Start.html'">Back to Start</button>
+        <button class = "btn" id="continuebtn" onclick="window.location.href='index.html'">Continue</button>
+      </div>
+
+    <!-- End Wrapper -->
+  </body>
+</html>
